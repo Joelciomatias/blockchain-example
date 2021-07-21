@@ -1,5 +1,6 @@
-# blockchain-example
-A little example of a blockchain in python
+# blockchain-examplo
+
+Um exemplo simples de uma blockchain em python
 
 ### Subir o programa:
 ```
