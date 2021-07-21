@@ -2,6 +2,8 @@
 
 Um exemplo simples de uma blockchain em python
 
+Fonte: https://www.udemy.com/course/formacao-engenheiro-de-blockchain/
+
 ### Subir o programa:
 ```
 python app.py
