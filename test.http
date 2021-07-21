@@ -1,0 +1,9 @@
+@host = http://localhost:5000
+###
+GET {{host}}/mine-block HTTP/1.1
+
+###
+GET {{host}}/get-blockchain HTTP/1.1
+
+###
+GET {{host}}/blockchain-is-valid HTTP/1.1
