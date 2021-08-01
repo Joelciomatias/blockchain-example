@@ -1,18 +1,26 @@
 import datetime
 import hashlib
 import json
+from urllib.parse import parse_qsl, urlparse
+import requests
 
 
 class Blockchain:
     def __init__(self):
         self.chain = []
+        self.transactions = []
         self.create_block(proof=1, previous_hash='0')
+        self.nodes = set()
 
     def create_block(self, proof, previous_hash):
         block = {'index': len(self.chain)+1,
                  'timestamp': str(datetime.datetime.now()),
                  'proof': proof,
-                 'previous_hash': previous_hash}
+                 'transactions': self.transactions,
+                 'previous_hash': previous_hash
+                 }
+        self.transactions = []
+
         self.chain.append(block)
         return block
 
@@ -52,5 +60,34 @@ class Blockchain:
             previous_block = block
             block_index += 1
         return True
+    
+    def add_transaction(self, sender, receiver, amount):
+        self.transactions.append({
+            'sender':sender,
+            'receiver':receiver,
+            'amount':amount
+        })
+        previus_block = self.get_previous_block()
+        return previus_block['index'] + 1
 
+    def add_node(self, address):
+        parse_url = urlparse(address)
+        self.nodes.add(parse_url.netloc)
 
+    def replace_chain(self):
+        network = self.nodes
+        longest_chain = None
+        max_length = len(self.chain)
+        for node in network:
+            response = requests.get(f'http://{node}/get-blockchain')
+            if response.status_code == 200:
+                content = response.json()
+                length = content['length']
+                chain = content['chain']
+                if length > max_length and self.is_chain_valid(chain):
+                    max_length = length
+                    longest_chain = chain
+        if longest_chain:
+            self.chain = longest_chain
+            return True
+        return False

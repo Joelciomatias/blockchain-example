@@ -1,4 +1,7 @@
 @host = http://localhost:5000
+@host1 = http://localhost:5001
+@host2 = http://localhost:5002
+
 ###
 GET {{host}}/mine-block HTTP/1.1
 
@@ -6,4 +9,34 @@ GET {{host}}/mine-block HTTP/1.1
 GET {{host}}/get-blockchain HTTP/1.1
 
 ###
+GET {{host}}/get-blockchain HTTP/1.1
+
+###
+GET {{host}}/get-blockchain HTTP/1.1
+
+###
+GET {{host}}/replace-chain HTTP/1.1
+
+###
 GET {{host}}/blockchain-is-valid HTTP/1.1
+
+###
+POST {{host1}}/connect-node HTTP/1.1
+content-type: application/json
+
+{
+    "nodes":[
+        "http://localhost:5000",
+        "http://localhost:5002"
+    ]
+}
+
+###
+POST {{host}}/add-transaction HTTP/1.1
+content-type: application/json
+
+{
+    "sender":"Fernando",
+    "receiver":"Pedro",
+    "amount": 100
+}
